@@ -1,18 +1,30 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import gulp from 'gulp';
 import babel from 'gulp-babel';
+import eslint from 'gulp-eslint';
 import del from 'del';
 import {exec} from 'child_process';
 
 const paths = {
-  allScrJs: 'src/**/*.js',
-  libDir: 'lib'
+  allSrcJs: 'src/**/*.js',
+  gulpFile: 'gulpfile.babel.js',
+  libDir: 'lib',
 };
+
+gulp.task('lint', () => {
+  return gulp.src([
+    paths.allSrcJs
+  ])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
+});
 
 gulp.task('clean', () => {
   return del(paths.libDir);
 });
 
-gulp.task('build', ['clean'], () => {
+gulp.task('build', ['lint', 'clean'], () => {
   return gulp.src(paths.allScrJs)
     .pipe(babel())
     .pipe(gulp.dest(paths.libDir));

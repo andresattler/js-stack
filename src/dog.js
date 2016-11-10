@@ -3,7 +3,7 @@ export default class {
     this.name = name;
   }
 
-  bark(){
+  bark() {
     return `Wah wah. I am ${this.name}`;
   }
 }
